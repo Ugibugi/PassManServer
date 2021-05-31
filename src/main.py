@@ -15,9 +15,9 @@ def hello_screen():
 
 @app.route("/vault/new", methods = ['POST'])
 def create_vault():
-    j = json.loads(request.data)
-    data = j['data']
-    if utils.verify_signature(data,j['sign']):
+    logging.error("Got REQ: " + str(request.json))
+    data = request.json['data']
+    if utils.verify_signature(data,data['public_key'],request.json['sign']):
         utils.insert_new_vault(data['public_key'],data['name'])
         return json.jsonify(utils.success())
     else:
@@ -26,9 +26,9 @@ def create_vault():
 
 @app.route("/vault/get", methods = ['POST'])
 def get_vault():
-    j = json.loads(request.data)
-    data = j['data']
-    if utils.verify_signature(data,j['sign']):
+    logging.error("Got REQ: " + str(request.json))
+    data = request.json['data']
+    if utils.verify_signature(data,data['public_key'],request.json['sign']):
         plist,name = utils.get_passwords(data['public_key'])
         return json.jsonify(utils.success({'keys':plist, 'name':name}))
     else:
@@ -36,9 +36,9 @@ def get_vault():
 
 @app.route("/pass/add", methods = ['POST'])
 def add_pass():
-    j = json.loads(request.data)
-    data = j['data']
-    if utils.verify_signature(data,j['sign']):
+    logging.error("Got REQ: " + str(request.json))
+    data = request.json['data']
+    if utils.verify_signature(data,data['public_key'],request.json['sign']):
         utils.insert_new_password(data['public_key'],data['name'],data['value'])
         return json.jsonify(utils.success())
     else:
