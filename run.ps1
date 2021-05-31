@@ -1,2 +1,2 @@
 $env:FLASK_APP = "src/main"
-python -m flask run -h localhost -p 3000
+python -m flask run --host=0.0.0.0 -p 3000
